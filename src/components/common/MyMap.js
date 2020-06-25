@@ -5,14 +5,20 @@ import LocationMarker from "./LocationMarker";
 import LocationPopup from "./LocationPopup";
 
 
-export default function Map() {
-    const [viewport, setViewport] = useState({
-        latitude: 	43.161030,
-        longitude: -77.610924,
-        width: '100%',
-        height: '200px',
-        zoom: 11
+export default function Map(props) {
+    const {
+        width = '100%',
+        height = '200px',
+        zoom = 11,
+        location = [43.161030, -77.610924] // lat/long respectively
+    } = props
 
+    const [viewport, setViewport] = useState({
+        latitude: location[0],
+        longitude: location[1],
+        zoom,
+        width: width,
+        height: height
     })	
     
 

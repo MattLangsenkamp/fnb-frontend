@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import About from './components/pages/About';
+import Locations from './components/pages/Locations';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import NoMatch from './components/pages/NoMatch';
@@ -14,7 +14,7 @@ function App() {
         <Layout>
           <Switch>
             <Route exact path="/" component={Home}></Route>
-            <Route path="/about" component={About}></Route>
+            <Route path="/locations" component={Locations}></Route>
             <Route path="/contact" component={Contact}></Route>
             <Route component={NoMatch}></Route>
           </Switch>

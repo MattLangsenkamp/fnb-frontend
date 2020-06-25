@@ -32,7 +32,7 @@ export default function NavigationBar() {
                     </Nav.Item>
                     <Nav.Item>
                         <Nav.Link>
-                            <Link to="/about">About</Link>
+                            <Link to="/locations">Locations</Link>
                         </Nav.Link>
                     </Nav.Item>
                     <Nav.Item>

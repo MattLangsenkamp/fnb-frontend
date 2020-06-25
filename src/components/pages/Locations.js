@@ -4,8 +4,8 @@ import MyMap from '../common/MyMap';
 export default function About() {
     return (
         <div>
-            <h2>about</h2>
-            <p>Yes it me</p>
+            <h2>Locations</h2>
+            <p>all the locations</p>
             <MyMap />
         </div>
     )

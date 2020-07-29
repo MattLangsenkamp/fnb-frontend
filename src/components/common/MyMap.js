@@ -1,31 +1,25 @@
-import ReactMapGL, { Marker, Popup  } from 'react-map-gl';
+import ReactMapGL from 'react-map-gl';
 import React, { useState, useEffect} from 'react';
 import * as locations from "../../data/locations.json"
 import LocationMarker from "./LocationMarker";
 import LocationPopup from "./LocationPopup";
 
 
-export default function Map(props) {
-    const {
-        width = '100%',
-        height = '200px',
-        zoom = 11,
-        location = [43.161030, -77.610924] // lat/long respectively
-    } = props
 
+export default function Map(props) {
+    
     const [viewport, setViewport] = useState({
-        latitude: location[0],
-        longitude: location[1],
-        zoom,
-        width: width,
-        height: height
+        latitude: 43.161030,
+        longitude: -77.610924,
+        zoom: 11,
+        width: '100%',
+        height: '200px'
     })	
     
-
     const [selectedLocation, setSelectedLocation] = useState(null);
-    
 
-    useEffect(() => {
+    useEffect((props) => {
+
         const listener = e => {
             if (e.key === "Escape") {
                 setSelectedLocation(null)
@@ -37,8 +31,11 @@ export default function Map(props) {
         }
     }, []);
 
+
     return ( 
-        <ReactMapGL {...viewport} 
+        
+        <ReactMapGL {...viewport} width="100%" height="inherit"
+            
             mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
             
             onResize={() => {
@@ -47,7 +44,7 @@ export default function Map(props) {
                 setViewport({
                     height: height,
                     width: width,
-                    zoom: zoom,
+                    zoom: zoom, 
                     latitude: 	latitude,
                     longitude: longitude,
                 })
@@ -57,7 +54,7 @@ export default function Map(props) {
             }}
         >
             {locations.locations.map(location => (
-                <LocationMarker setSelectedLocation={setSelectedLocation} location={location}/>
+                <LocationMarker setSelectedLocation={setSelectedLocation} location={location} key={location.id}/>
             ))}
 
             {selectedLocation ? (
@@ -66,3 +63,5 @@ export default function Map(props) {
         </ReactMapGL>
     )
 }
+
+

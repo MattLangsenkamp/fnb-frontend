@@ -1,24 +1,31 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Locations from './components/pages/Locations';
-import Contact from './components/pages/Contact';
+import GetInvolved from './components/pages/GetInvolved';
 import Home from './components/pages/Home';
 import NoMatch from './components/pages/NoMatch';
-import Layout from './components/common/Layout';
-import NavigationBar from './components/common/NavigationBar';
+import { createGlobalStyle } from 'styled-components';
+import AddLocation from './components/pages/AddLocation';
+
+const Styles = createGlobalStyle`
+  body, html, #root {
+    height: 100%;
+  }
+  
+`;
 
 function App() {
   return (
     <>
+      <Styles />
       <Router>
-        <Layout>
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route path="/locations" component={Locations}></Route>
-            <Route path="/contact" component={Contact}></Route>
+            <Route path="/getinvolved" component={GetInvolved}></Route>
+            <Route path="/addlocation" component={AddLocation}></Route>
             <Route component={NoMatch}></Route>
           </Switch>
-        </Layout>
       </Router>
     </>
   );

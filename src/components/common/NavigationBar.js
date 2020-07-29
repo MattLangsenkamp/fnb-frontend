@@ -15,30 +15,31 @@ const Styles = styled.div`
             color: white;
         }
     }
+    .navlink {
+        margin: auto 5px auto 5px;
+    }
+    
 `;
 
 export default function NavigationBar() {
     return (
         <Styles>
             <Navbar expand="lg">
-                <Navbar.Brand href="/">Code Life</Navbar.Brand>
+                <Navbar.Brand href="/">Roc Food Not Bombs</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-nav"></Navbar.Toggle>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="ml-auto">
-                    <Nav.Item>
-                        <Nav.Link>
-                            <Link to="/">Home</Link>
-                        </Nav.Link>
+                    <Nav.Item className="navlink">
+                        <Link to="/">Home</Link>
                     </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link>
-                            <Link to="/locations">Locations</Link>
-                        </Nav.Link>
+                    <Nav.Item className="navlink">
+                        <Link to="/locations">Locations</Link>    
                     </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link>
-                            <Link to="/contact">Contact</Link>
-                        </Nav.Link>
+                    <Nav.Item className="navlink">
+                        <Link to="/addlocation">Add a Location</Link>
+                    </Nav.Item>
+                    <Nav.Item className="navlink">
+                        <Link to="/getinvolved">Get Involved</Link>
                     </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>

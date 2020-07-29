@@ -31,8 +31,8 @@ export default function Jumbotron(props) {
             <Jumbo fluid className="jumbo">
                 <div className="overlay"></div>
                 <Container>
-                    <h1>Welcome</h1>
-                    <p>Learn to code from my YouTube videos</p>
+                    <h1>{props.title}</h1>
+                    <p>{props.description}</p>
                 </Container>
             </Jumbo>
         </Styles>

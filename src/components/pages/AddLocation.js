@@ -209,9 +209,9 @@ export default function AddLocation() {
                                     <Thumb file={values.picturePath} />
                                 </Form.Group>
                                 <Form.Group as={Col} md="3" controlId="validationFormik08">
-                                <Button type="submit">
-                                    Submit
-                                </Button>
+                                    <Button type="submit">
+                                        Submit
+                                    </Button>
                                 </Form.Group>
                             </Form>
                         )}

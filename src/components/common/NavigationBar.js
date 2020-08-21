@@ -41,6 +41,12 @@ export default function NavigationBar() {
                     <Nav.Item className="navlink">
                         <Link to="/getinvolved">Get Involved</Link>
                     </Nav.Item>
+                    <Nav.Item className="navlink">
+                        <Link to="/signup">Sign Up</Link>
+                    </Nav.Item>
+                    <Nav.Item className="navlink">
+                        <Link to="/signin">Sign In</Link>
+                    </Nav.Item>                
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

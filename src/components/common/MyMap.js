@@ -4,8 +4,6 @@ import * as locations from "../../data/locations.json"
 import LocationMarker from "./LocationMarker";
 import LocationPopup from "./LocationPopup";
 
-
-
 export default function Map(props) {
     
     const [viewport, setViewport] = useState({
@@ -15,7 +13,8 @@ export default function Map(props) {
         width: '100%',
         height: '200px'
     })	
-    
+
+
     const [selectedLocation, setSelectedLocation] = useState(null);
 
     useEffect((props) => {
@@ -31,8 +30,11 @@ export default function Map(props) {
         }
     }, []);
 
+    const data = props.data
+
 
     return ( 
+        <>
         
         <ReactMapGL {...viewport} width="100%" height="inherit"
             
@@ -53,14 +55,16 @@ export default function Map(props) {
                 setViewport(viewport);
             }}
         >
-            {locations.locations.map(location => (
+
+            {data.getAllLocations.payload.map(location => (
                 <LocationMarker setSelectedLocation={setSelectedLocation} location={location} key={location.id}/>
             ))}
-
+            
             {selectedLocation ? (
                 <LocationPopup selectedLocation={selectedLocation} setSelectedLocation={setSelectedLocation}/>
             ): null}
         </ReactMapGL>
+        </>
     )
 }
 

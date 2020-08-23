@@ -4,15 +4,19 @@ import React from 'react';
 export default function LocationPopup({selectedLocation, setSelectedLocation}) {
     return (    
         <Popup 
-            latitude={selectedLocation.coordinateY} 
-            longitude={selectedLocation.coordinateX}
+            latitude={selectedLocation.latitude} 
+            longitude={selectedLocation.longitude}
             onClose={() => setSelectedLocation(null)}
         >
             <div>
-                <h1>
+                <h4> {selectedLocation.name} </h4>
+                <h6>
                     {selectedLocation.friendlyLocation}
-                </h1>
-                park
+                </h6>
+                <h6>
+                    {selectedLocation.description}
+                </h6>
+                <img src={selectedLocation.pictureURI} alt="location" />
             </div>  
         </Popup>
     )

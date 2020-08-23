@@ -4,17 +4,17 @@
             "id": 1,
             "name": "sruuu",
             "friendlyLocation": "newww33",
-            "coordinateX": -77.576221,
-            "coordinateY": 43.165123,
-            "pictureURI": "ok"
+            "longitude": -77.576221,
+            "latitude": 43.165123,
+            "pictureURI": "ok.png"
         },
         {
             "id": 2,
             "name": "uufa",
             "friendlyLocation": "newww33",
-            "coordinateX": -77.584466,
-            "coordinateY": 43.150096,
-            "pictureURI": "ok"
+            "longitude": -77.584466,
+            "latitude": 43.150096,
+            "pictureURI": "ok.png"
         }
     ]
 }

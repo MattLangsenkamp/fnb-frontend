@@ -6,12 +6,38 @@ import * as Yup from "yup";
 import { Form, Col, Button } from 'react-bootstrap';
 import Error from '../common/Error';
 import styled from 'styled-components';
+import { gql, useMutation } from '@apollo/client';
 
 const FormStyles = styled.div`
     .form-error {
         border-color: #f44336;
     }
 `;
+
+const ADD_LOCATION = gql`
+mutation AddLocation($name: String!, 
+        $friendlyLocation: String!, 
+        $description: String!, 
+        $latitude: Float!,
+        $longitude: Float!
+        $pictureURI: String!){
+    addLocation(
+        name: $name, 
+        friendlyLocation: $friendlyLocation,
+        description: $description,
+        latitude: $latitude,
+        longitude: $longitude,
+        pictureURI: $pictureURI,
+        type: FREE_STORE) {
+            message
+            payload {
+                locationOwner
+                id
+                name
+            }
+        }
+}
+`
 
 const ValidationSchema = Yup.object({
     name: Yup.string()
@@ -34,9 +60,6 @@ const ValidationSchema = Yup.object({
         .min(-180, "Too Short!")
         .max(180, "Too Long!")
         .required("Required"),
-    type: Yup.string()
-        .oneOf(["Free Store", "Food Stand", "Shelter", "Other"])
-        .required(),
     picturePath: Yup.mixed()
         .required("A picturePath of the location is required")
   });
@@ -50,7 +73,7 @@ const ValidationSchema = Yup.object({
 
 export default function AddLocation() {
     const description = "The new location will show up on the map on the locations page"
-
+    const [addLocation, { data }] = useMutation(ADD_LOCATION);
     return (
         <FormStyles>
             <Layout title={"Add a Location"} description={description}>
@@ -62,19 +85,32 @@ export default function AddLocation() {
                         latitude: "",
                         longitude: "",
                         picturePath: "",
-                        type: ""
                     }} 
                     validationSchema={ValidationSchema}
 
-                    onSubmit={(values, { setSubmitting}) => {
+
+                    onSubmit={(values, { setSubmitting, resetForm}) => {
                         setSubmitting(true);
                         console.log(values);
                         var file = values.picturePath;
                         var reader = new FileReader();
                         reader.onloadend = function() {
-                            console.log('RESULT', reader.result)
+                            addLocation({variables:
+                                {
+                                    name: values.name,
+                                    friendlyLocation: values.friendlyName,
+                                    pictureURI: reader.result,
+                                    description: values.description, 
+                                    latitude: values.latitude,
+                                    longitude: values.longitude
+                                }
+                            })
+
                         }
-                        reader.readAsDataURL(file);
+                        reader.readAsDataURL(file)
+                        resetForm({values: ''})
+                        document.getElementById("hmmm").value = "";
+                        
                     }}
                     >
 
@@ -89,6 +125,8 @@ export default function AddLocation() {
                             isValid,
                             setFieldValue
                         }) => (
+                            <>
+                            {data && data.message && <h1>hi!</h1>}
                             <Form onSubmit={handleSubmit} >
                               
                                 <Form.Group as={Col} md="6" controlId="validationFormik01">
@@ -113,6 +151,7 @@ export default function AddLocation() {
                                         type="text"
                                         name="friendlyName"
                                         placeholder="Corner of X and Y"
+                                        value={values.friendlyName}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.friendlyName && !errors.friendlyName}
@@ -129,6 +168,7 @@ export default function AddLocation() {
                                         rows="3"
                                         name="description"
                                         placeholder="Free stand, regularily stocked with food"
+                                        value={values.description}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.description && !errors.description}
@@ -150,6 +190,7 @@ export default function AddLocation() {
                                         type="text"
                                         name="latitude"
                                         placeholder="latitude"
+                                        value={values.latitude}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.latitude && !errors.latitude}
@@ -160,11 +201,12 @@ export default function AddLocation() {
                                     {RenderErrorMessage(touched, errors, values, "latitude")}
                                 </Form.Group>
                                 <Form.Group as={Col} md="3" controlId="validationFormik05">
-                                    <Form.Label>longitude</Form.Label>
+                                    <Form.Label>Longitude</Form.Label>
                                     <Form.Control
                                         type="text"
                                         name="longitude"
                                         placeholder="longitude"
+                                        value={values.longitude}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.longitude && !errors.longitude}
@@ -174,32 +216,15 @@ export default function AddLocation() {
                                     />
                                     {RenderErrorMessage(touched, errors, values, "longitude")}
                                 </Form.Group>
-                                <Form.Group as={Col} md="3" controlId="validationFormik06">
-                                    <Form.Label>type</Form.Label>
-                                    <Form.Control 
-                                        as="select" name="type" 
-                                        onChange={handleChange}
-                                        isValid={touched.type && !errors.type}
-                                        onBlur={handleBlur}
-                                        className={(touched.type &&
-                                            errors.type &&
-                                            values.type.length > 0)? "form-error" : null}
-                                    >
-                                        <option>Pick a Location Type</option>
-                                        <option>Free Store</option>
-                                        <option>Food Stand</option>
-                                        <option>Shelter</option>
-                                        <option>Other</option>
-                                    </Form.Control>
-                                    {RenderErrorMessage(touched, errors, values, "type")}
-                                </Form.Group>
                                 <Form.Group as={Col} md="3" controlId="validationFormik07">
-                                    <Form.Label>picturePath</Form.Label>
+                                    <Form.Label>Picture</Form.Label>
                                     <Form.File>
                                         <Form.File.Input 
-                                        name="picturePath" 
+                                        id="hmmm"
+                                        name="picturePath"
                                         onChange={(event) => {
                                             setFieldValue("picturePath", event.currentTarget.files[0]);
+                                            console.log(event.currentTarget.files[0].name)
                                         }}
                                         className={(touched.picturePath &&
                                             errors.picturePath &&
@@ -213,7 +238,10 @@ export default function AddLocation() {
                                         Submit
                                     </Button>
                                 </Form.Group>
+
                             </Form>
+                            {data && JSON.stringify(data.message)}
+                            </>
                         )}
                 </Formik>
             </Layout>

@@ -10,7 +10,12 @@ const client = new ApolloClient({
   credentials: 'include'
 });
 
-
+cache.writeQuery({
+  query: IS_LOGGED_IN,
+  data: {
+    isLoggedIn: !!localStorage.getItem("token"),
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>

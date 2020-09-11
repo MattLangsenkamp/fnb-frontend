@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
+import { Nav, Navbar, Button } from 'react-bootstrap';
 import styled from 'styled-components';
+import {gql, useQuery } from '@apollo/client';
+import  cache  from './../../index';
 
 const Styles = styled.div`
     .navbar {
@@ -20,8 +22,26 @@ const Styles = styled.div`
     }
     
 `;
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
+
+const logOut = () => {
+    localStorage.removeItem("AccessToken")
+    localStorage.removeItem("RefreshToken")
+    cache.writeQuery({
+        query: IS_LOGGED_IN,
+        data: {
+          isLoggedIn: !!localStorage.getItem("AccessToken") && !!localStorage.getItem("RefreshToken"),
+        },
+      });
+}
 
 export default function NavigationBar() {
+    const { data } = useQuery(IS_LOGGED_IN)
+    
     return (
         <Styles>
             <Navbar expand="lg">
@@ -35,18 +55,27 @@ export default function NavigationBar() {
                     <Nav.Item className="navlink">
                         <Link to="/locations">Locations</Link>    
                     </Nav.Item>
-                    <Nav.Item className="navlink">
-                        <Link to="/addlocation">Add a Location</Link>
-                    </Nav.Item>
-                    <Nav.Item className="navlink">
-                        <Link to="/getinvolved">Get Involved</Link>
-                    </Nav.Item>
-                    <Nav.Item className="navlink">
-                        <Link to="/signup">Sign Up</Link>
-                    </Nav.Item>
-                    <Nav.Item className="navlink">
-                        <Link to="/signin">Sign In</Link>
-                    </Nav.Item>                
+                    {data.isLoggedIn ? 
+                    <>
+                        <Nav.Item className="navlink">
+                            <Link to="/addlocation">Add a Location</Link>
+                        </Nav.Item>
+                        <Nav.Item className="navlink">
+                            <Button onClick = {logOut}>Sign out</Button>
+                        </Nav.Item>
+                    </>
+                    :
+                    <>
+                        <Nav.Item className="navlink">
+                            <Link to="/getinvolved">Get Involved</Link>
+                        </Nav.Item>
+                        <Nav.Item className="navlink">
+                            <Link to="/signup">Sign Up</Link>
+                        </Nav.Item>
+                        <Nav.Item className="navlink">
+                            <Link to="/signin">Sign In</Link>
+                        </Nav.Item>
+                    </> }               
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>

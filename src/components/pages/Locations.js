@@ -30,6 +30,8 @@ export default function Locations() {
     const { loading, error, data } = useQuery(GET_LOCATIONS);
     const description = "A map containing locations of various food resources around the rochester area"
     if (loading) return 'Loading...';
+    if (error) return 'Error...';
+    
 
     return (
         <Layout title={"Locations"} description={description}>

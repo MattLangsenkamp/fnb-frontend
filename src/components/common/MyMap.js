@@ -1,6 +1,5 @@
 import ReactMapGL from 'react-map-gl';
 import React, { useState, useEffect} from 'react';
-import * as locations from "../../data/locations.json"
 import LocationMarker from "./LocationMarker";
 import LocationPopup from "./LocationPopup";
 
@@ -56,7 +55,7 @@ export default function Map(props) {
             }}
         >
 
-            {data.getAllLocations.payload.map(location => (
+            {data && data.getAllLocations.payload.map(location => (
                 <LocationMarker setSelectedLocation={setSelectedLocation} location={location} key={location.id}/>
             ))}
             

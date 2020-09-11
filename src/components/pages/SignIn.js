@@ -6,6 +6,9 @@ import { Form, Col, Button } from 'react-bootstrap';
 import Error from '../common/Error';
 import styled from 'styled-components';
 import { gql, useMutation } from '@apollo/client';
+import { Redirect } from 'react-router-dom';
+import  cache  from './../../index';
+
 
 const FormStyles = styled.div`
     .form-error {
@@ -43,7 +46,11 @@ const SIGN_IN = gql`
         }
     }
 `;
-
+const IS_LOGGED_IN = gql`
+  query IsUserLoggedIn {
+    isLoggedIn @client
+  }
+`;
 export default function SignIn() {
 
     const updateCache = (cache, {data}) => {
@@ -52,7 +59,20 @@ export default function SignIn() {
       };
     const [signIn, {data : mutData, error: mutationError }] = useMutation(SIGN_IN, {update: updateCache});
 
-    
+    if (mutData) {
+        localStorage.setItem("AccessToken", mutData.signIn.AccessToken);
+        cache.writeQuery({
+            query: IS_LOGGED_IN,
+            data: {
+              isLoggedIn: !!localStorage.getItem("AccessToken"),
+            },
+          });
+        if (mutData.signIn.message === "Successfully signed in") {
+            return <Redirect to="/locations" />
+        }
+    }
+
+    if (mutationError) return "Error"
 
     return (
         <FormStyles>
@@ -123,8 +143,6 @@ export default function SignIn() {
                                         Submit
                                     </Button>
                                 </Form.Group>
-                                {mutationError && <p>no</p>}
-                                {mutData && <p>data</p>}
                             </Form>         
                         )}
                 </Formik>

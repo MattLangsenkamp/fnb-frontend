@@ -60,11 +60,12 @@ export default function SignIn() {
     const [signIn, {data : mutData, error: mutationError }] = useMutation(SIGN_IN, {update: updateCache});
 
     if (mutData) {
-        localStorage.setItem("AccessToken", mutData.signIn.AccessToken);
+        //localStorage.setItem("AccessToken", mutData.signIn.AccessToken);
+
         cache.writeQuery({
             query: IS_LOGGED_IN,
             data: {
-              isLoggedIn: !!localStorage.getItem("AccessToken"),
+              isLoggedIn: !!localStorage.getItem("AccessToken") && !!localStorage.getItem("RefreshToken"),
             },
           });
         if (mutData.signIn.message === "Successfully signed in") {

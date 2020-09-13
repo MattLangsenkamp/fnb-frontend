@@ -17,7 +17,7 @@ const GET_LOCATIONS = gql`
                     description
                     latitude
                     longitude
-                    pictureURI
+                    picture
                     friendlyLocation
                 }
                 message

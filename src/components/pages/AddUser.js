@@ -37,7 +37,35 @@ const RenderErrorMessage = (touched, errors, values, field) => {
         values[field].length > 0) && <Error touched={touched[field]} message={errors[field]} />
 }
 
+const SIGN_UP = gql`
+    mutation SignUp($username: String!, $password: String!) {
+        signUp(username: $username, password: $password) {
+            message
+            AccessToken
+            RefreshToken
+        }
+    }
+`;
+
 export default function AddUser() {
+
+    const [signUp, {data : mutData, error: mutationError }] = useMutation(SIGN_UP);
+
+    if (mutData) {
+
+        cache.writeQuery({
+            query: IS_LOGGED_IN,
+            data: {
+              isLoggedIn: !!localStorage.getItem("AccessToken") && !!localStorage.getItem("RefreshToken"),
+            },
+          });
+        if (mutData.signIn.message === "Successfully signed in") {
+            return <Redirect to="/locations" />
+        }
+    }
+
+    if (mutationError) return "Error"
+
     return (
         <FormStyles>
             <Layout title={"Sign Up"} description={"Sign up to add a location"}>
@@ -51,7 +79,7 @@ export default function AddUser() {
 
                     onSubmit={(values, { setSubmitting}) => {
                         setSubmitting(true);
-                        console.log(values);
+                        signUp({variables: {username: values.username, password: values.password}})
                     }}
                     >
 

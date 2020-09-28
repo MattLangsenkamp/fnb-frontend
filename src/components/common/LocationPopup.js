@@ -1,19 +1,27 @@
-import { Popup } from 'react-map-gl';
-import React from 'react';
+import { Popup } from "react-map-gl";
+import React from "react";
 
-export default function LocationPopup({selectedLocation, setSelectedLocation}) {
-    return (    
-        <Popup 
-            latitude={selectedLocation.coordinateY} 
-            longitude={selectedLocation.coordinateX}
-            onClose={() => setSelectedLocation(null)}
-        >
-            <div>
-                <h1>
-                    {selectedLocation.friendlyLocation}
-                </h1>
-                park
-            </div>  
-        </Popup>
-    )
+export default function LocationPopup({
+  selectedLocation,
+  setSelectedLocation,
+}) {
+  return (
+    <Popup
+      latitude={selectedLocation.latitude}
+      longitude={selectedLocation.longitude}
+      onClose={() => setSelectedLocation(null)}
+    >
+      <div>
+        <h4> {selectedLocation.name} </h4>
+        <h6>{selectedLocation.friendlyLocation}</h6>
+        <h6>{selectedLocation.description}</h6>
+        <img
+          src={selectedLocation.picture}
+          alt="location"
+          height="250"
+          width="250"
+        />
+      </div>
+    </Popup>
+  );
 }

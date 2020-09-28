@@ -8,6 +8,8 @@ import NoMatch from './components/pages/NoMatch';
 import { createGlobalStyle } from 'styled-components';
 import AddLocation from './components/pages/AddLocation';
 import SignIn from './components/pages/SignIn';
+import User from './components/pages/UserPage';
+import Location from './components/pages/LocationPage';
 
 const Styles = createGlobalStyle`
   body, html, #root {
@@ -28,6 +30,8 @@ function App() {
             <Route path="/addlocation" component={AddLocation}></Route>
             <Route path="/signup" component={AddUser}></Route>
             <Route path="/signin" component={SignIn}></Route>
+            <Route path="/user/:userId" component={User}></Route>
+            <Route path="/location/:locationId" component={Location}></Route>
             <Route component={NoMatch}></Route>
           </Switch>
       </Router>
